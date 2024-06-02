@@ -33,9 +33,10 @@ public class SupplierController {
         return new ResponseEntity<>(suppliers ,HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Supplier> deleteSupplier(@RequestBody IdDTO id) throws Exception {
-        UUID uuidd = UUID.fromString(id.id());
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Supplier> deleteSupplier(@PathVariable String id) throws Exception {
+        UUID uuidd = UUID.fromString(id);
+        System.out.println(uuidd);
         Supplier aux = supplierServices.deleteSupplier(uuidd);
         return new ResponseEntity<>(aux, HttpStatus.OK);
     }
