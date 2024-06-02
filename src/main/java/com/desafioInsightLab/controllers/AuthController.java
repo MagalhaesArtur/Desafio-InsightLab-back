@@ -3,7 +3,9 @@ package com.desafioInsightLab.controllers;
 
 import com.desafioInsightLab.domain.user.User;
 import com.desafioInsightLab.dtos.AuthDTO;
+import com.desafioInsightLab.dtos.LoginResDTO;
 import com.desafioInsightLab.dtos.RegisterDTO;
+import com.desafioInsightLab.infra.security.TokenService;
 import com.desafioInsightLab.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +24,16 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody  AuthDTO data){
         var usernamePass = new UsernamePasswordAuthenticationToken(data.username(), data.password());
         var auth = authenticationManager.authenticate(usernamePass);
-        return  ResponseEntity.ok().build();
+
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+        return  ResponseEntity.ok(new LoginResDTO(token));
 
     }
     @PostMapping("/register")
