@@ -17,6 +17,10 @@ public class AuthService implements UserDetailsService {
         return repository.findByUsername(username);
     }
 
+    public User findUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findUserByUsername(username);
+    }
+
 
     public User createUser(User data){
         repository.save(data);

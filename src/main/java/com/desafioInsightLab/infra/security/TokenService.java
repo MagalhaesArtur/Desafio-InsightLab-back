@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.desafioInsightLab.domain.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,21 @@ public class TokenService {
     }
 
 
+    public String getUser(String token){
+        try{
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            return JWT.require(algorithm)
+                    .withIssuer("insight-api")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        }catch (JWTVerificationException exception){
+            return "";
+
+        }
+    }
+
 
     public String validateToken(String token){
         try{
@@ -46,6 +62,24 @@ public class TokenService {
             return "";
 
         }
+    }
+
+    public boolean validateToken(String token, boolean aux){
+
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            DecodedJWT jwt = JWT.require(algorithm)
+                    .withIssuer("insight-api")
+                    .build()
+                    .verify(token);
+
+            if (jwt instanceof DecodedJWT) {
+                return true;
+            } else {
+                return false;
+            }
+
+
     }
 
     private Instant genExpirationDate(){
