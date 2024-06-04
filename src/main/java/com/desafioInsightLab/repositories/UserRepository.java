@@ -7,7 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.UUID;
 
 public interface UserRepository  extends JpaRepository<User, UUID> {
-    UserDetails findByUsername(String username);
     User findUserByUsername(String username);
+    UserDetails findByEmail(String email);
+    User findUserByEmail(String email);
 
 }

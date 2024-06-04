@@ -1,4 +1,4 @@
 package com.desafioInsightLab.dtos;
 
-public record AuthDTO(String username, String password,String email) {
+public record AuthDTO( String password,String email) {
 }
